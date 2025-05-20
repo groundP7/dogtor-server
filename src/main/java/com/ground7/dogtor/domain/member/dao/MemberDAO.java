@@ -17,6 +17,6 @@ public class MemberDAO {
     }
 
     signUp(MemberSignUpRequest memberSignUpRequest){
-        String sql = "INSERT INTO m.login_id, m.password, m.name, m.phone_number, a.address, a.detail_address, a.postal_code"
+        String sql = "INSERT INTO login_id, name, password, phone_number "
     }
 }
