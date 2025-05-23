@@ -6,6 +6,7 @@ import com.ground7.dogtor.global.util.PasswordValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 @Service
@@ -17,8 +18,9 @@ public class MemberService {
     @Autowired
     PasswordEncoder passwordEncoder;
 
+    @Transactional
     // 회원가입 처리 메서드
-    signUp(MemberSignUpRequest memberSignUpRequest){
+    public void signUp(MemberSignUpRequest memberSignUpRequest){
 
         // 1. 회원가입 요청 데이터 유효성 검사.
         // 1-1 필수 값을 체크한다.
@@ -55,7 +57,10 @@ public class MemberService {
         // 2. 비밀번호 암호화
         memberSignUpRequest.setPassword(passwordEncoder.encode(memberSignUpRequest.getPassword()));
 
-        // 3. 회원가입 요청 데이터를 db에 저장
-        memberDAO.signUp(memberSignUpRequest);
+        // 3. 회원가입 요청 멤버 데이터를 db에 저장 후 memberId 추출
+        Long memberId = memberDAO.signUpMember(memberSignUpRequest);
+
+        // 4. 회원가입 요청 주소 데이터를 db에 저장
+        memberDAO.signUpAddress(memberId, memberSignUpRequest);
     }
 }

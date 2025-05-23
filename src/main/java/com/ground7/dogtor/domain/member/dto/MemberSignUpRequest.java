@@ -13,7 +13,6 @@ public class MemberSignUpRequest {
     private String name;
     private String password;
     private String phoneNumber;
-    private Role role = Role.USER;
     private boolean smsAgree;
 
     private String address;
